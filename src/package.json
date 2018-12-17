@@ -1,0 +1,14 @@
+{
+  "name": "passportjs-google-oauth-spike",
+  "version": "0.0.1",
+  "description": "Spike to test out PassportJS with Google OAuth integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "BeerOnBeard",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
