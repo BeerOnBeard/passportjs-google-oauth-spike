@@ -1,24 +1,47 @@
 (function(){
+  var UNAUTHORIZED = 'Unauthorized';
+  function checkForUnauthorized(response) {
+    if (response.status === 401) {
+      throw new Error(UNAUTHORIZED);
+    }
+
+    return response;
+  }
+
   var DataAccess = {
     getPeople: function() {
-      return fetch('/people').then(function(response) { return response.json(); });
+      return fetch('/people')
+        .then(checkForUnauthorized)
+        .then(function(response) { return response.json(); });
     },
     putPerson: function(name, score) {
       return fetch(
         '/people/' + name,
         { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ score: score }) }
       )
+        .then(checkForUnauthorized)
         .then(function(response) { return response.json(); });
     },
     deletePerson: function(personId) {
-      return fetch('/people/' + personId, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+      return fetch('/people/' + personId, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } })
+        .then(checkForUnauthorized);
     }
   };
+
+  function redirectOnUnauthorized(error) {
+    if (error.message === UNAUTHORIZED) {
+      alert("You need to log in. Let's go do that!");
+      window.location.replace('/');
+    }
+
+    throw error;
+  }
 
   function deletePerson() {
     var personElement = this.parentNode;
     DataAccess.deletePerson(personElement.id)
-      .then(function() { personElement.parentNode.removeChild(personElement); });
+      .then(function() { personElement.parentNode.removeChild(personElement); })
+      .catch(redirectOnUnauthorized);
   }
 
   function createPersonElement(person) {
@@ -56,7 +79,8 @@
     DataAccess.getPeople()
       .then(function(people) {
         people.forEach(function(person) { upsertPersonElementInList(listElement, person); });
-      });
+      })
+      .catch(redirectOnUnauthorized);
   }
 
   function initializeForm() {
@@ -64,10 +88,12 @@
       evt.preventDefault();
       var name = document.getElementById('name').value;
       var score = document.getElementById('score').value;
-      DataAccess.putPerson(name, score).then(function(person) {
-        var listElement = getListElement();
-        upsertPersonElementInList(listElement, person);
-      });
+      DataAccess.putPerson(name, score)
+        .then(function(person) {
+          var listElement = getListElement();
+          upsertPersonElementInList(listElement, person);
+        })
+        .catch(redirectOnUnauthorized);
     });
   }
 
