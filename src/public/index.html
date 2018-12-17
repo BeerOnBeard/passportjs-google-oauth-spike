@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #person-list {
+        margin-top: 1rem;
+        display: flex;
+        flex-flow: column;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="upsert-form" onsubmit="return false">
+      <label for="name">
+        Name:
+        <input id="name" type="text" required />
+      </label>
+      <label for="score">
+        Score:
+        <input id="score" type="number" required />
+      </label>
+      <input id="upsert" type="submit" value="Upsert" />
+    </form>
+    <div id="person-list"></div>
+    <script type="text/javascript" src="main.js"></script>
+  </body>
+</html>

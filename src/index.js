@@ -4,10 +4,11 @@ const Person = require('./Person');
 const express = require('express');
 const app = express();
 app.use(express.json());
+app.use(express.static('public'));
 
 const people = {
-  Brian: new Person('Paula', 200),
-  Lucretia: new Person('Faith', 1000)
+  Paula: new Person('Paula', 200),
+  Faith: new Person('Faith', 1000)
 };
 
 app.get('/people', (req, res) => {
