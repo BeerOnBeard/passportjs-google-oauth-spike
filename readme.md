@@ -12,17 +12,3 @@ The app requires Google authentication to be set up using the [Google Developer 
 const googleClientId = 'REPLACE_ME';
 const googleClientSecret = 'REPLACE_ME';
 ```
-
-## Testing Using Curl
-
-```
-curl -si localhost:3000/people
-```
-
-```
-curl -si -X PUT -H "Content-Type: application/json" -d '{ "score": 500 }' localhost:3000/people/Mo
-```
-
-```
-curl -si -X DELETE -H "Content-Type: application/json" localhost:3000/people/Mo
-```
