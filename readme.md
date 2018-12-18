@@ -2,7 +2,27 @@
 
 Provide a simple example of using PassportJS with Google OAuth integration. The app must contain a switch to turn on and off authentication/authorization for endpoints. The app must use environment variables to set the required configuration for Google OAuth integration.
 
-Use `npm start` in the `src` directory to run the application. The web site can be found at http://localhost:3000/app.html, by default. Updating the `listenPort` in `config.js` will change the port.
+## Environment Variables
+
+Environment variables can be defined using a `.env` file in the `src` directory. However, if any of the environment variables are already defined at a higher level, the `.env` configs will not override them.
+
+`.env` files are ignored by `.gitignore` and **should not** be committed to the repository.
+
+### GOOGLE_CLIENT_ID *(required)*
+
+The Client ID provided by Google for OAuth integration.
+
+### GOOGLE_CLIENT_SECRET *(required)*
+
+The client secret provided by Google for OAuth integration.
+
+### LISTEN_PORT *(default: 3000)*
+
+Defines the port the ExpressJS server will listen on for requests.
+
+### SESSION_SECRET *(default: "changeit")*
+
+The key used to encrypt session cookies.
 
 ## Google Authentication Setup
 
