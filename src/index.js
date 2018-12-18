@@ -1,15 +1,14 @@
 const config = require('./config');
-
 const Person = require('./Person');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20');
+const express = require('express');
+
+// fake backing store for people
 const people = {
   Paula: new Person('Paula', 200),
   Faith: new Person('Faith', 1000)
 };
-
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const express = require('express');
-const app = express();
 
 passport.use(new GoogleStrategy({
     clientID: config.googleClientId,
@@ -22,6 +21,7 @@ passport.use(new GoogleStrategy({
 passport.serializeUser((user, cb) => cb(null, user));
 passport.deserializeUser((obj, cb) => cb(null, obj));
 
+const app = express();
 app.use(require('express-session')({ secret: config.sessionSecret, resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
