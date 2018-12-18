@@ -1,7 +1,4 @@
-const port = 3000;
-const googleClientId = 'REPLACE_ME';
-const googleClientSecret = 'REPLACE_ME';
-const sessionSecret = 'very secret';
+const config = require('./config');
 
 const Person = require('./Person');
 const people = {
@@ -15,9 +12,9 @@ const express = require('express');
 const app = express();
 
 passport.use(new GoogleStrategy({
-    clientID: googleClientId,
-    clientSecret: googleClientSecret,
-    callbackURL: 'http://localhost:3000/auth/google/callback'
+    clientID: config.googleClientId,
+    clientSecret: config.googleClientSecret,
+    callbackURL: `http://localhost:${conig.listenPort}/auth/google/callback`
   },
   (accessToken, refreshToken, profile, cb) => cb(null, profile)
 ));
@@ -25,7 +22,7 @@ passport.use(new GoogleStrategy({
 passport.serializeUser((user, cb) => cb(null, user));
 passport.deserializeUser((obj, cb) => cb(null, obj));
 
-app.use(require('express-session')({ secret: sessionSecret, resave: true, saveUninitialized: false }));
+app.use(require('express-session')({ secret: config.sessionSecret, resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
@@ -71,4 +68,4 @@ app.delete('/people/:name', verifyAuthenticated, (req, res) => {
   res.status(200).json(person);
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(config.listenPort, () => console.log(`Listening on port ${config.listenPort}...`));
